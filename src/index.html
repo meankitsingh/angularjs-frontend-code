@@ -1,40 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
-  <title>Diabetes Mini-Dashboard</title>
+    <title>Diabetes Mini-Dashboard</title>
 
-  <!-- Application CSS Files -->
-  <link rel="stylesheet" href="lib/normalize.css" />
-  <link rel="stylesheet" href="fonts.css" />
-  <link rel="stylesheet" href="app.css" />
+    <!-- Application CSS Files -->
+    <link rel="stylesheet" href="lib/normalize.css" />
+    <link rel="stylesheet" href="fonts.css" />
+    <link rel="stylesheet" href="app.css" />
+  </head>
 
-</head>
+  <body ng-app="app">
+    <!-- NoScript error -->
+    <noscript
+      >We're sorry, but this website doesn't work properly without
+      JavaScript.</noscript
+    >
 
-<body ng-app="app">
+    <div ng-controller="appController as ctrl" ng-cloak>
+      <div class="dash_header">
+        <div class="inner_container">
+          <div class="navigation_row">
+            <ul>
+              <li>
+                <a href="#"><img src="assets/images/icon-80x80-light.png" /></a>
+              </li>
+              <li><a href="#">Dashboard</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-  <!-- NoScript error -->
-  <noscript>We're sorry, but this website doesn't work properly without JavaScript.</noscript>
+      <div class="page_title">
+        <div class="inner_container">
+          <label class="date_view">{{displayFormatDate()}}</label>
+          <span
+            ng-click="next()"
+            class="change_Date cursor-pointer icon-arrow-sprite icon-left noselect"
+          ></span>
+          <span
+            ng-click="prev()"
+            class="change_Date cursor-pointer icon-arrow-sprite icon-right noselect"
+          ></span>
+        </div>
+      </div>
 
-  <div ng-controller="appController as ctrl" ng-cloak>
+      <div class="columns_container">
+        <div class="inner_container">
+          <div class="columns_row">
+            <div class="column">
+              <h4>
+                <span class="icon-event-sprite icon-drop"></span>
+                <span>Total Blood Sugar Events</span>
+              </h4>
+              <div class="column_body" ng-if="currentDayEvent">
+                <div class="status">
+                  <span class="blue_dot"></span>
+                </div>
+                <div class="count">
+                  {{currentDayEvent.totalEvents}} <label> events</label>
+                </div>
+              </div>
 
-    <!--
-      ADD YOUR HTML HERE
-    -->
+              <div class="column_body" ng-if="!currentDayEvent">
+                <div class="count"><label>Not enough events</label></div>
+              </div>
 
-    {{ ctrl.helloWorld }}
+              <div class="day_info" ng-if="prevDayEvent">
+                Previous Day -
+                <span class="status_blue">{{prevDayEvent.totalEvents}}</span>
+              </div>
+            </div>
 
-  </div>
+            <div class="column">
+              <h4>
+                <span class="icon-event-sprite icon-drop"></span>
+                <span>Total Blood Sugar Events</span>
+              </h4>
+              <div class="column_body" ng-if="currentDayEvent">
+                <div class="status">
+                  <span class="icon-status-sprite icon-down-sprite"></span>
+                </div>
+                <div class="count">
+                  {{currentDayEvent.averageBloodSugar}} <label> mg/dL</label>
+                </div>
+              </div>
+              <div class="column_body" ng-if="!currentDayEvent">
+                <div class="count"><label>Not enough events</label></div>
+              </div>
+              <div class="day_info" ng-if="prevDayEvent">
+                Previous Day -
+                <span class="status_yellow"
+                  >{{prevDayEvent.averageBloodSugar}}</span
+                >
+              </div>
+            </div>
 
-  <!-- Application JavaScript Files-->
-  <script type="text/javascript" src="lib/angular.min.js"></script>
-  <script type="text/javascript" src="lib/moment.min.js"></script>
-  <script type="text/javascript" src="app.js"></script>
+            <div class="column">
+              <h4>
+                <span class="icon-event-sprite icon-drop"></span>
+                <span>Total Blood Sugar Events</span>
+              </h4>
+              <div class="column_body" ng-if="currentDayEvent">
+                <div class="status">
+                  <span class="green_dot"></span>
+                </div>
+                <div class="count">
+                  {{currentDayEvent.rangePercent}} <label> %</label>
+                </div>
+              </div>
+              <div class="column_body" ng-if="!currentDayEvent">
+                <div class="count"><label>Not enough events</label></div>
+              </div>
+              <div class="day_info" ng-if="prevDayEvent">
+                Previous Day -
+                <span class="status_green">{{prevDayEvent.rangePercent}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-</body>
-
+    <!-- Application JavaScript Files-->
+    <script type="text/javascript" src="lib/angular.min.js"></script>
+    <script type="text/javascript" src="lib/moment.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+  </body>
 </html>
