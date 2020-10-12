@@ -2,7 +2,6 @@
 
 var app = angular.module("app", []);
 
-// event service
 app.service("eventService", function () {
   const DEMO_EVENTS = [
     { value: 100, time: moment() },
@@ -19,15 +18,14 @@ app.service("eventService", function () {
   function filterRange(arr, a, b) {
     return arr.filter((item) => a <= item.value && item.value <= b);
   }
-  // get Event info based on date
+  // get Event info
   this.getEvent = function (date) {
-    // filter all the data based on date
     const filterData = DEMO_EVENTS.filter(function (item) {
       return moment(item.time.format()).isSame(date.format());
     });
 
     if (filterData && filterData.length > 0) {
-      // calculate average blood sugar
+      // get average blood sugar
       const averageBloodSugar = Math.floor(
         filterData
           .map(function (item) {
@@ -38,7 +36,7 @@ app.service("eventService", function () {
           }) / filterData.length
       );
 
-      // calculate event range percent
+      // get event range percent
       const eventRangePercent = Math.floor(
         (filterRange(filterData, 70, 180).length / filterData.length) * 100
       );
@@ -56,23 +54,28 @@ app.service("eventService", function () {
 app.controller("appController", function ($scope, eventService) {
   var ctrl = this;
 
-  $scope.currentPeriod = moment();
-  $scope.currentDayEvent = eventService.getEvent($scope.currentPeriod);
-  $scope.prevDayEvent = eventService.getEvent($scope.currentPeriod);
-
-  $scope.displayFormatDate = function () {
-    return $scope.currentPeriod.format("ddd, D MMM YYYY");
+  // get period
+  const getPeriod = function (currentDate,prevDate) {
+    $scope.currentPeriod = currentDate;
+    $scope.currentDayEvent = eventService.getEvent(currentDate);
+    $scope.prevDayEvent = eventService.getEvent(prevDate);
   };
 
-  $scope.next = function () {
-    $scope.currentPeriod = $scope.currentPeriod.add(1, "day");
-    $scope.currentDayEvent = eventService.getEvent($scope.currentPeriod);
-    $scope.prevDayEvent = eventService.getEvent($scope.currentPeriod);
+  getPeriod(moment(),moment().subtract(1, "day"));
+
+  $scope.nextDay = function () {    
+    const date=moment($scope.currentPeriod.format()).add(1, "day");
+    const prevDay=$scope.currentPeriod;  
+    getPeriod(date,prevDay);
   };
 
-  $scope.prev = function () {
-    $scope.currentPeriod = $scope.currentPeriod.subtract(1, "day");
-    $scope.currentDayEvent = eventService.getEvent($scope.currentPeriod);
-    $scope.prevDayEvent = eventService.getEvent($scope.currentPeriod);
+  $scope.prevDay = function () {
+    const date=moment($scope.currentPeriod.format()).subtract(1, "day");
+    const prevDay=moment($scope.currentPeriod.format()).subtract(2, "day");
+    getPeriod(date,prevDay);
+
   };
+
+
+  
 });

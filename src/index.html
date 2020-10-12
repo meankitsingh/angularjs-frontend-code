@@ -21,7 +21,7 @@
     >
 
     <div ng-controller="appController as ctrl" ng-cloak>
-      <div class="dash_header">
+      <div class="dashboard_header">
         <div class="inner_container">
           <div class="navigation_row">
             <ul>
@@ -36,13 +36,13 @@
 
       <div class="page_title">
         <div class="inner_container">
-          <label class="date_view">{{displayFormatDate()}}</label>
+          <label class="date_view">{{currentPeriod.format("ddd, D MMM YYYY")}}</label>
           <span
-            ng-click="next()"
+            ng-click="prevDay()"
             class="change_Date cursor-pointer icon-arrow-sprite icon-left noselect"
           ></span>
           <span
-            ng-click="prev()"
+            ng-click="nextDay()"
             class="change_Date cursor-pointer icon-arrow-sprite icon-right noselect"
           ></span>
         </div>
